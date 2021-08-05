@@ -44,26 +44,26 @@ public class DyncFilter implements Filter{
         }
     }
 
-    public double[] filter(double[] accVec, double[] accVec_range) {
-        if (accVec_range[0] < x_down * 9.81 && accVec_range[0] > 0) {
+    public double[] filter(double[] accVec) {
+        if (accVec[0] < x_down * 9.81 && accVec[0] > 0) {
             accVec[0] = 0;
         }
-        if (accVec_range[1] < y_down * 9.81 && accVec_range[1] > 0) {
+        if (accVec[1] < y_down * 9.81 && accVec[1] > 0) {
             accVec[1] = 0;
         }
-        if (accVec_range[2] < 1 * 9.81 && accVec_range[2] > z_up * 9.81) {
+        if (accVec[2] < 1 * 9.81 && accVec[2] > z_up * 9.81) {
             accVec[2] = 9.81;
         }
-        if (accVec_range[2] < z_down * 9.81 && accVec_range[2] > 1 * 9.81) {
+        if (accVec[2] < z_down * 9.81 && accVec[2] > 1 * 9.81) {
             accVec[2] = 9.81;
         }
-        if (accVec_range[0] > x_up * 9.81 && accVec_range[0] < 0) {
+        if (accVec[0] > x_up * 9.81 && accVec[0] < 0) {
             accVec[0] = 0;
         }
-        if (accVec_range[1] > y_up * 9.81 && accVec_range[1] < 0) {
+        if (accVec[1] > y_up * 9.81 && accVec[1] < 0) {
             accVec[1] = 0;
         }
-        if (accVec_range[2] > -1 * 9.81 && accVec_range[2] < -0.5 * 9.81) {
+        if (accVec[2] > -1 * 9.81 && accVec[2] < -0.5 * 9.81) {
             accVec[2] = -9.81;
         }
         return accVec;
