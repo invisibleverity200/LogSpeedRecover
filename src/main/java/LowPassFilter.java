@@ -9,7 +9,7 @@ public class LowPassFilter {
 
     public static double[] filter(double[] data, double lowPass, double frequency) {
 
-
+//FOURIER SAVE ME PLLSSS
         int minPowerOf2 = 1;
         while (minPowerOf2 < data.length)
             minPowerOf2 = 2 * minPowerOf2;
