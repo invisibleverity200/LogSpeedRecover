@@ -9,7 +9,7 @@ public class Utils {
 
     public static double[] convertToRotatedVectorSpace(double[] vec, double[] hdg) {
         //return multiplyRotationMatrixVector(invertRotationMatrix(rotationMatrix), vec);
-        return rotateVectorCC(vec, new double[][]{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, hdg, 0);
+        return rotateVectorCC(vec, new double[][]{{0, 0, 1}, {1, 0, 0}, {0, 1, 0}}, hdg, 0);
     }
 
     public static double[] getAccVector(double[] acc, double oneG) {

@@ -1,11 +1,11 @@
 public class DyncFilter implements Filter{
 
-    private double x_up = -0.55;
-    private double x_down = 0.55;
-    private double y_down = 0.55;
-    private double y_up = -0.55;
-    private double z_down = 1.33;
-    private double z_up = 0.5;
+    private double x_up = -0;
+    private double x_down = 0;
+    private double y_down = 0;
+    private double y_up = -0;
+    private double z_down = 1;
+    private double z_up = 1;
 
     private double delta_rate ;
     private double target;
@@ -19,29 +19,38 @@ public class DyncFilter implements Filter{
         if (signal[1] > target) {
             if (signal[8] > target) {
                 x_down += delta_rate;
-                x_up += delta_rate;
+                x_up -= delta_rate;
             }
             if (signal[9] > target) {
                 y_down += delta_rate;
-                y_up += delta_rate;
+                y_up -= delta_rate;
             }
             if (signal[10] > target) {
                 z_down += delta_rate;
-                z_up += delta_rate;
+                z_up -= delta_rate;
             }
             if (signal[8] < -target) {
-                x_down -= delta_rate;
+                x_down += delta_rate;
                 x_up -= delta_rate;
             }
             if (signal[9] < -target) {
-                y_down -= delta_rate;
+                y_down += delta_rate;
                 y_up -= delta_rate;
             }
             if (signal[10] < -target) {
-                z_down -= delta_rate;
+                z_down += delta_rate;
                 z_up -= delta_rate;
             }
         }
+        System.out.println("z_down: "+ z_down);
+        System.out.println("z_up: "+ z_up);
+        System.out.println("x_down: "+ x_down);
+        System.out.println("x_up: "+ x_up);
+        System.out.println("y_down: "+ y_down);
+        System.out.println("y_up: "+ y_up);
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public double[] filter(double[] accVec) {

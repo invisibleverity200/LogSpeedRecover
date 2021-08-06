@@ -12,12 +12,12 @@ public class VelDataSet extends DefaultCategoryDataset {
     int bufferStrength;
     double old = 12381983;
     double old_old = 12381983;
-    int s = 1;
+    int s = 10;
 
     // timestamp OneG acc(x y z) hdg(z y x)
     VelDataSet(ArrayList<double[]> data) {
         int chartCreated = 1;
-        Filter filter = new DyncFilter(0.02, 1);
+        Filter filter = new DyncFilter(0.02, 5);
         bufferStrength = data.size() / 1000;
         double old = 12381983;
         do {
@@ -56,7 +56,7 @@ public class VelDataSet extends DefaultCategoryDataset {
                 double hdg_pitch;
                 double hdg_yaw;
 
-                double true_vertical_velocity = (data.get(i)[8] - data.get(i - 4)[8]) / (delta_T / 1000000);
+                double true_vertical_velocity = (data.get(i)[8] - data.get(i - 1)[8]) / (delta_T / 1000000);
                 double true_acceleration = ((true_vertical_velocity - oldVel) / (delta_T / 1000000)) / 9.81;
                 oldVel = true_vertical_velocity;
 
@@ -68,7 +68,7 @@ public class VelDataSet extends DefaultCategoryDataset {
                 hdg_pitch = hdgYArray[i];
                 hdg_yaw = hdgZArray[i];
 
-                double[] hdgVec = new double[]{Utils.RadToGrad(hdg_roll) % (Math.PI * 2), Utils.RadToGrad(hdg_pitch) % (Math.PI * 2), Utils.RadToGrad(hdg_yaw) % (Math.PI * 2)};
+                double[] hdgVec = new double[]{Utils.RadToGrad(hdg_yaw) % (Math.PI * 2), Utils.RadToGrad(hdg_roll) % (Math.PI * 2), Utils.RadToGrad(hdg_pitch) % (Math.PI * 2)};
 
                 double[] unconvertedAccVector = Utils.convertToRotatedVectorSpace(new double[]{acc_x, acc_y, acc_z}, hdgVec);
                 double[] accVec = Utils.getAccVector(unconvertedAccVector, oneG_calibrated);
@@ -108,8 +108,10 @@ public class VelDataSet extends DefaultCategoryDataset {
                 frame.setContentPane(panel);
                 frame.setSize(800, 700);
                 frame.setVisible(true);
-                chartCreated = 0;
             }
+
+            System.out.println("Velocity Magnitude: " + Utils.getVecLength(Vel));
+            chartCreated++;
         } while (processedData.get(processedData.size() - 1)[1] > 1);
         addToDataset();
     }
@@ -139,9 +141,9 @@ public class VelDataSet extends DefaultCategoryDataset {
             this.addValue(avaragedAcc_x / bufferStrength / 9.81, "Acceleration x (m/s^2)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
             this.addValue(avaragedAcc_y / bufferStrength / 9.81, "Acceleration y (m/s^2)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
             this.addValue(avaragedAcc_z / bufferStrength / 9.81, "Acceleration z (m/s^2)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
-            this.addValue(height / bufferStrength, "Height (m)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
+            //this.addValue(height / bufferStrength, "Height (m)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
             this.addValue(true_vertical_velocity / bufferStrength, "Tru_Verticle_velocity (m)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
-            this.addValue(true_acceleration / bufferStrength, "true_acceleration (m/s^2)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
+            //this.addValue(true_acceleration / bufferStrength, "true_acceleration (m/s^2)", String.valueOf((float) ((processedData.get(i - bufferStrength)[0] - processedData.get(0)[0]) / 1000000)));
         }
     }
 
